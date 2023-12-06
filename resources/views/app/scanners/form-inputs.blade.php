@@ -1,7 +1,7 @@
 @php $editing = isset($scanner) @endphp
 
-<div class="flex flex-wrap">
-    <x-inputs.group class="w-full">
+<div class="row">
+    <x-inputs.group class="col-sm-12">
         <x-inputs.text
             name="name"
             label="Name"
@@ -12,7 +12,7 @@
         ></x-inputs.text>
     </x-inputs.group>
 
-    <x-inputs.group class="w-full">
+    <x-inputs.group class="col-sm-12">
         <x-inputs.number
             name="amount"
             label="Amount"
@@ -24,7 +24,7 @@
         ></x-inputs.number>
     </x-inputs.group>
 
-    <x-inputs.group class="w-full">
+    <x-inputs.group class="col-sm-12">
         <x-inputs.select name="mode" label="Mode">
             @php $selected = old('mode', ($editing ? $scanner->mode : '')) @endphp
             <option value="pay" {{ $selected == 'pay' ? 'selected' : '' }} >Pay</option>
@@ -32,10 +32,10 @@
         </x-inputs.select>
     </x-inputs.group>
 
-    <x-inputs.group class="w-full">
-        <x-inputs.select name="user_id" label="User" required>
+    <x-inputs.group class="col-sm-12">
+        <x-inputs.select name="user_id" label="Vendor ID" required>
             @php $selected = old('user_id', ($editing ? $scanner->user_id : '')) @endphp
-            <option disabled {{ empty($selected) ? 'selected' : '' }}>Please select the User</option>
+            <option disabled {{ empty($selected) ? 'selected' : '' }}>Please select the Vendor</option>
             @foreach($users as $value => $label)
             <option value="{{ $value }}" {{ $selected == $value ? 'selected' : '' }} >{{ $label }}</option>
             @endforeach

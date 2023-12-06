@@ -23,9 +23,9 @@ class CardFactory extends Factory
     public function definition()
     {
         return [
-            'rfid' => $this->faker->text(255),
-            'security_key' => $this->faker->text(255),
-            'balance' => $this->faker->randomNumber(1),
+            'rfid' => $this->faker->text(10),
+            'security_key' => $this->faker->text(5),
+            'balance' => $this->faker->randomFloat(2, 0, 9999),
             'status' => 'active',
             'student_id' => \App\Models\Student::factory(),
         ];

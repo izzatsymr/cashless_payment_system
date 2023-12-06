@@ -22,10 +22,12 @@ class StudentController extends Controller
 
         $students = Student::search($search)
             ->latest()
-            ->paginate(5)
-            ->withQueryString();
+            ->get();
 
-        return view('app.students.index', compact('students', 'search'));
+        $users = User::whereHas('roles', function ($query) {
+            $query->where('name', 'parent');
+        })->pluck('name', 'id');
+        return view('app.students.index', compact('students', 'users'));
     }
 
     /**

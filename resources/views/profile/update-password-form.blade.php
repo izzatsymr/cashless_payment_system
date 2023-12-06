@@ -1,39 +1,68 @@
-<x-jet-form-section submit="updatePassword">
-    <x-slot name="title">
-        {{ __('Update Password') }}
-    </x-slot>
-
-    <x-slot name="description">
-        {{ __('Ensure your account is using a long, random password to stay secure.') }}
-    </x-slot>
-
-    <x-slot name="form">
-        <div class="col-span-6 sm:col-span-4">
-            <x-jet-label for="current_password" value="{{ __('Current Password') }}" />
-            <x-jet-input id="current_password" type="password" class="mt-1 block w-full" wire:model.defer="state.current_password" autocomplete="current-password" />
-            <x-jet-input-error for="current_password" class="mt-2" />
-        </div>
-
-        <div class="col-span-6 sm:col-span-4">
-            <x-jet-label for="password" value="{{ __('New Password') }}" />
-            <x-jet-input id="password" type="password" class="mt-1 block w-full" wire:model.defer="state.password" autocomplete="new-password" />
-            <x-jet-input-error for="password" class="mt-2" />
-        </div>
-
-        <div class="col-span-6 sm:col-span-4">
-            <x-jet-label for="password_confirmation" value="{{ __('Confirm Password') }}" />
-            <x-jet-input id="password_confirmation" type="password" class="mt-1 block w-full" wire:model.defer="state.password_confirmation" autocomplete="new-password" />
-            <x-jet-input-error for="password_confirmation" class="mt-2" />
-        </div>
-    </x-slot>
-
-    <x-slot name="actions">
-        <x-jet-action-message class="mr-3" on="saved">
-            {{ __('Saved.') }}
-        </x-jet-action-message>
-
-        <x-jet-button>
-            {{ __('Save') }}
-        </x-jet-button>
-    </x-slot>
-</x-jet-form-section>
+<div class="tab-pane" id="tab-2" tabindex="0">
+    <div class="card col-sep card-gutter-md">
+        <div class="card-body">
+            <div class="bio-block">
+                <h4 class="bio-block-title mb-4">Change Password</h4>
+                <form wire:submit.prevent="updatePassword">
+                    <div class="row g-3">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label for="current_password" class="form-label">Current
+                                    Password</label>
+                                <div class="form-control-wrap">
+                                    <a class="form-control-icon end password-toggle" title="Toggle show/hide password">
+                                        <em class="on icon ni ni-eye-off"></em>
+                                        <em class="off icon ni ni-eye"></em>
+                                    </a>
+                                    <input type="password" class="form-control" id="current_password"
+                                        wire:model.defer="state.current_password" autocomplete="current-password">
+                                </div>
+                            </div>
+                        </div><!-- .col -->
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label for="password" class="form-label">New Password</label>
+                                <div class="form-control-wrap">
+                                    <a class="form-control-icon end password-toggle" title="Toggle show/hide password">
+                                        <em class="on icon ni ni-eye-off"></em>
+                                        <em class="off icon ni ni-eye"></em>
+                                    </a>
+                                    <input type="password" class="form-control" id="password"
+                                        wire:model.defer="state.password" autocomplete="new-password">
+                                </div>
+                            </div>
+                        </div><!-- .col -->
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label for="password_confirmation" class="form-label">Confirm
+                                    New
+                                    Password</label>
+                                <div class="form-control-wrap">
+                                    <a class="form-control-icon end password-toggle" title="Toggle show/hide password">
+                                        <em class="on icon ni ni-eye-off"></em>
+                                        <em class="off icon ni ni-eye"></em>
+                                    </a>
+                                    <input type="password" class="form-control" id="password_confirmation"
+                                        wire:model.defer="state.password_confirmation" autocomplete="new-password">
+                                </div>
+                            </div>
+                        </div><!-- .col -->
+                        <div class="col-lg-12">
+                            <div class="d-flex flex-wrap align-items-center gap g-3">
+                                <div class="gap-col">
+                                    <button class="btn btn-primary" type="submit">Change
+                                        Password</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div><!-- .bio-block -->
+        </div><!-- .card-body -->
+        <div class="card-body">
+            <div class="bio-block">
+                @livewire('profile.logout-other-browser-sessions-form')
+            </div><!-- .bio-block -->
+        </div><!-- .card-body -->
+    </div><!-- .card -->
+</div><!-- .tab-pane -->

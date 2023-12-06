@@ -23,7 +23,7 @@ class ScannerFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->name(),
+            'name' => $this->faker->Name(),
             'amount' => $this->faker->randomNumber(1),
             'mode' => 'pay',
             'user_id' => \App\Models\User::factory(),

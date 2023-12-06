@@ -1,7 +1,7 @@
 @php $editing = isset($student) @endphp
 
-<div class="flex flex-wrap">
-    <x-inputs.group class="w-full">
+<div class="row">
+    <x-inputs.group class="col-sm-12">
         <x-inputs.text
             name="name"
             label="Name"
@@ -12,7 +12,7 @@
         ></x-inputs.text>
     </x-inputs.group>
 
-    <x-inputs.group class="w-full">
+    <x-inputs.group class="col-sm-12">
         <x-inputs.date
             name="date_of_birth"
             label="Date Of Birth"
@@ -22,15 +22,16 @@
         ></x-inputs.date>
     </x-inputs.group>
 
-    <x-inputs.group class="w-full">
+    <x-inputs.group class="col-sm-12">
         <x-inputs.select name="gender" label="Gender">
             @php $selected = old('gender', ($editing ? $student->gender : '')) @endphp
             <option value="male" {{ $selected == 'male' ? 'selected' : '' }} >Male</option>
             <option value="female" {{ $selected == 'female' ? 'selected' : '' }} >Female</option>
+            <option value="other" {{ $selected == 'other' ? 'selected' : '' }} >Other</option>
         </x-inputs.select>
     </x-inputs.group>
 
-    <x-inputs.group class="w-full">
+    <x-inputs.group class="col-sm-12">
         <x-inputs.text
             name="address"
             label="Address"
@@ -41,8 +42,8 @@
         ></x-inputs.text>
     </x-inputs.group>
 
-    <x-inputs.group class="w-full">
-        <x-inputs.select name="user_id" label="User" required>
+    <x-inputs.group class="col-sm-12">
+        <x-inputs.select name="user_id" label="Parent ID" required>
             @php $selected = old('user_id', ($editing ? $student->user_id : '')) @endphp
             <option disabled {{ empty($selected) ? 'selected' : '' }}>Please select the User</option>
             @foreach($users as $value => $label)

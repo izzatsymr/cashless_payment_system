@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Laravel\Sanctum\Sanctum;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
@@ -48,7 +47,6 @@ class RoleController extends Controller {
      */
     public function store(Request $request) 
     {
-        Sanctum::actingAs(request()->user(), [], 'web');
 
         $this->authorize('create', Role::class);
 

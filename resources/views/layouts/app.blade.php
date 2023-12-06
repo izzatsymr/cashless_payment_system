@@ -1,90 +1,71 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
-        
-        <title>CashlessPaymentSystem1</title>
-        
-        <!-- Fonts -->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
-        
-        <!-- Styles -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
-        
-        <!-- Icons -->
-        <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
-        
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+<html lang="en">
 
-        
-        @livewireStyles
-    </head>
-    <body class="font-sans antialiased">
-        <x-jet-banner />
+<!-- CSRF Token -->
+<meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <div class="min-h-screen bg-gray-100">
-            @livewire('navigation-menu')
-        
-            <!-- Page Heading -->
-            @if (isset($header))
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endif
-        
-            <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
-        </div>
+<head>
+    <base href="../">
+    <meta charset="utf-8">
+    <meta name="author" content="Izzat Syamir">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Cashless Payment System For Scool.">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <title>Cashless Payment System For School</title>
+</head>
 
-        @stack('modals')
-        
-        @livewireScripts
-        
-        @stack('scripts')
-        
-        <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
-        
-        @if (session()->has('success')) 
-        <script>
-            var notyf = new Notyf({dismissible: true})
-            notyf.success('{{ session('success') }}')
-        </script> 
-        @endif
-        
-        <script>
-            /* Simple Alpine Image Viewer */
-            document.addEventListener('alpine:init', () => {
-                Alpine.data('imageViewer', (src = '') => {
-                    return {
-                        imageUrl: src,
-        
-                        refreshUrl() {
-                            this.imageUrl = this.$el.getAttribute("image-url")
-                        },
-        
-                        fileChosen(event) {
-                            this.fileToDataUrl(event, src => this.imageUrl = src)
-                        },
-        
-                        fileToDataUrl(event, callback) {
-                            if (! event.target.files.length) return
-        
-                            let file = event.target.files[0],
-                                reader = new FileReader()
-        
-                            reader.readAsDataURL(file)
-                            reader.onload = e => callback(e.target.result)
-                        },
-                    }
-                })
-            })
-        </script>
-    </body>
+<body class="nk-body" data-sidebar-collapse="lg" data-navbar-collapse="lg">
+    <!-- Root -->
+    <div class="nk-app-root">
+        <!-- main  -->
+        <div class="nk-main">
+            @include('layouts.sidebar')
+            <!-- wrap -->
+            <div class="nk-wrap">
+                @include('layouts.nav')
+                <!-- content -->
+                <div class="nk-content">
+                    @yield('content')
+                </div> <!-- .nk-content -->
+                @include('layouts.footer')
+            </div> <!-- .nk-wrap -->
+        </div> <!-- .nk-main -->
+    </div> <!-- .nk-app-root -->
+</body>
+
+<!-- JavaScript -->
+<link rel="shortcut icon" href="{{ asset('images/favicon.png') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/style.css?v1.1.2') }}">
+<script src="{{ asset('assets/js/bundle.js') }}"></script>
+<script src="{{ asset('assets/js/scripts.js') }}"></script>
+<script src="{{ asset('assets/js/charts/analytics-chart.js') }}"></script>
+<script src="{{ asset('assets/js/data-tables/data-tables.js') }}"></script>
+
+@if(session()->has('success'))
+<script>
+    Swal.fire({
+        title: "Success!",
+        text: "{{ session('success') }}",
+        icon: "success"
+    });
+</script>
+@endif
+<script>
+    function confirmDelete(userId) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'You won\'t be able to revert this!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#603cfc',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('deleteForm' + userId).submit();
+            }
+        });
+    }
+</script>
+
 </html>

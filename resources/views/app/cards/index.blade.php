@@ -1,173 +1,130 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            @lang('crud.cards.index_title')
-        </h2>
-    </x-slot>
+@extends('layouts.app')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <x-partials.card>
-                <div class="mb-5 mt-4">
-                    <div class="flex flex-wrap justify-between">
-                        <div class="md:w-1/2">
-                            <form>
-                                <div class="flex items-center w-full">
-                                    <x-inputs.text
-                                        name="search"
-                                        value="{{ $search ?? '' }}"
-                                        placeholder="{{ __('crud.common.search') }}"
-                                        autocomplete="off"
-                                    ></x-inputs.text>
-
-                                    <div class="ml-1">
-                                        <button
-                                            type="submit"
-                                            class="button button-primary"
-                                        >
-                                            <i class="icon ion-md-search"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="md:w-1/2 text-right">
-                            @can('create', App\Models\Card::class)
-                            <a
-                                href="{{ route('cards.create') }}"
-                                class="button button-primary"
-                            >
-                                <i class="mr-1 icon ion-md-add"></i>
-                                @lang('crud.common.create')
-                            </a>
-                            @endcan
-                        </div>
+@section('content')
+<div class="container">
+    <div class="nk-content-inner">
+        <div class="nk-content-body">
+            <div class="nk-block-head">
+                <div class="nk-block-head-between flex-wrap gap g-2">
+                    <div class="nk-block-head-content">
+                        <h2 class="nk-block-title">Card List</h1>
+                            <nav>
+                                <ol class="breadcrumb breadcrumb-arrow mb-0">
+                                    <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">Cards
+                                    </li>
+                                </ol>
+                            </nav>
                     </div>
-                </div>
-
-                <div class="block w-full overflow-auto scrolling-touch">
-                    <table class="w-full max-w-full mb-4 bg-transparent">
-                        <thead class="text-gray-700">
+                    <div class="nk-block-head-content">
+                        <ul class="d-flex">
+                            @can('create', App\Models\Card::class)
+                            <li>
+                                <a href="{{ route('cards.create') }}" class="btn btn-md d-md-none btn-primary"
+                                    data-bs-toggle="modal" data-bs-target="#addCardModal">
+                                    <em class="icon ni ni-plus"></em>
+                                    <span>Add</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('cards.create') }}" class="btn btn-primary d-none d-md-inline-flex"
+                                    data-bs-toggle="modal" data-bs-target="#addCardModal">
+                                    <em class="icon ni ni-plus"></em>
+                                    <span>Add Card</span>
+                                </a>
+                            </li>
+                            @endcan
+                        </ul>
+                    </div>
+                </div><!-- .nk-block-head-between -->
+            </div><!-- .nk-block-head -->
+            <div class="nk-block">
+                <div class="card">
+                    <table class="datatable-init table" data-nk-container="table-responsive">
+                        <thead class="table-light">
                             <tr>
-                                <th class="px-4 py-3 text-left">
-                                    @lang('crud.cards.inputs.rfid')
+                                <th class="tb-col">
+                                    <span class="overline-title">UID RFID</span>
                                 </th>
-                                <th class="px-4 py-3 text-left">
-                                    @lang('crud.cards.inputs.security_key')
+                                <th class="tb-col">
+                                    <span class="overline-title">Security Key</span>
                                 </th>
-                                <th class="px-4 py-3 text-right">
-                                    @lang('crud.cards.inputs.balance')
+                                <th class="tb-col">
+                                    <span class="overline-title">Balance</span>
                                 </th>
-                                <th class="px-4 py-3 text-left">
-                                    @lang('crud.cards.inputs.status')
+                                <th class="tb-col tb-col-xl">
+                                    <span class="overline-title">Student</span>
                                 </th>
-                                <th class="px-4 py-3 text-left">
-                                    @lang('crud.cards.inputs.student_id')
+                                <th class="tb-col tb-col-xxl">
+                                    <span class="overline-title">Status</span>
                                 </th>
-                                <th></th>
+                                <th class="tb-col tb-col-end" data-sortable="false">
+                                    <span class="overline-title">Action</span>
+                                </th>
                             </tr>
                         </thead>
-                        <tbody class="text-gray-600">
+                        <tbody>
                             @forelse($cards as $card)
-                            <tr class="hover:bg-gray-50">
-                                <td class="px-4 py-3 text-left">
-                                    {{ $card->rfid ?? '-' }}
-                                </td>
-                                <td class="px-4 py-3 text-left">
-                                    {{ $card->security_key ?? '-' }}
-                                </td>
-                                <td class="px-4 py-3 text-right">
-                                    {{ $card->balance ?? '-' }}
-                                </td>
-                                <td class="px-4 py-3 text-left">
-                                    {{ $card->status ?? '-' }}
-                                </td>
-                                <td class="px-4 py-3 text-left">
-                                    {{ optional($card->student)->name ?? '-' }}
-                                </td>
-                                <td
-                                    class="px-4 py-3 text-center"
-                                    style="width: 134px;"
-                                >
-                                    <div
-                                        role="group"
-                                        aria-label="Row Actions"
-                                        class="
-                                            relative
-                                            inline-flex
-                                            align-middle
-                                        "
-                                    >
-                                        @can('update', $card)
-                                        <a
-                                            href="{{ route('cards.edit', $card) }}"
-                                            class="mr-1"
-                                        >
-                                            <button
-                                                type="button"
-                                                class="button"
-                                            >
-                                                <i
-                                                    class="icon ion-md-create"
-                                                ></i>
-                                            </button>
+                            @if(auth()->user()->hasRole('super-admin') || auth()->user()->id == $card->student->user_id)
+                            <tr>
+                                <td class="tb-col">{{ $card->rfid ?? '-' }}</td>
+                                <td class="tb-col">{{ $card->security_key ?? '-' }}</td>
+                                <td class="tb-col">{{ $card->balance ?? '-' }}</td>
+                                <td class="tb-col">{{ optional($card->student)->name ?? '-' }}</td>
+                                <td class="tb-col">{{ $card->status ?? '-' }}</td>
+
+                                <td class="tb-col tb-col-end">
+                                    <div class="dropdown">
+                                        <a href="#" class="btn btn-sm btn-icon btn-zoom me-n1"
+                                            data-bs-toggle="dropdown">
+                                            <em class="icon ni ni-more-v"></em>
                                         </a>
-                                        @endcan @can('view', $card)
-                                        <a
-                                            href="{{ route('cards.show', $card) }}"
-                                            class="mr-1"
-                                        >
-                                            <button
-                                                type="button"
-                                                class="button"
-                                            >
-                                                <i class="icon ion-md-eye"></i>
-                                            </button>
-                                        </a>
-                                        @endcan @can('delete', $card)
-                                        <form
-                                            action="{{ route('cards.destroy', $card) }}"
-                                            method="POST"
-                                            onsubmit="return confirm('{{ __('crud.common.are_you_sure') }}')"
-                                        >
-                                            @csrf @method('DELETE')
-                                            <button
-                                                type="submit"
-                                                class="button"
-                                            >
-                                                <i
-                                                    class="
-                                                        icon
-                                                        ion-md-trash
-                                                        text-red-600
-                                                    "
-                                                ></i>
-                                            </button>
-                                        </form>
-                                        @endcan
-                                    </div>
+                                        <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
+                                            <div class="dropdown-content py-1">
+                                                <ul class="link-list link-list-hover-bg-primary link-list-md">
+                                                    <li>
+                                                        @can('update', $card)
+                                                        <a href="{{ route('cards.edit', $card) }}"><em
+                                                                class="icon ni ni-edit"></em><span>Edit</span></a>
+                                                        @endcan
+                                                    </li>
+                                                    <li>
+                                                        @can('delete', $card)
+                                                        <form id="deleteForm{{ $card->id }}"
+                                                            action="{{ route('cards.destroy', $card) }}" method="POST">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <a onclick="confirmDelete({{ $card->id }})">
+                                                                <em class="icon ni ni-trash"></em><span>Delete</span>
+                                                            </a>
+                                                        </form>
+                                                        @endcan
+                                                    </li>
+                                                    <li>
+                                                        @can('view', $card)
+                                                        <a href="{{ route('cards.show', $card) }}"><em
+                                                                class="icon ni ni-eye"></em><span>View
+                                                                Details</span></a>
+                                                        @endcan
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div><!-- dropdown -->
                                 </td>
                             </tr>
+                            @endif
                             @empty
                             <tr>
-                                <td colspan="6">
-                                    @lang('crud.common.no_items_found')
-                                </td>
+                                <td colspan="8" class="text-center py-4">No cards found.</td>
                             </tr>
                             @endforelse
                         </tbody>
-                        <tfoot>
-                            <tr>
-                                <td colspan="6">
-                                    <div class="mt-10 px-4">
-                                        {!! $cards->render() !!}
-                                    </div>
-                                </td>
-                            </tr>
-                        </tfoot>
                     </table>
-                </div>
-            </x-partials.card>
+                </div><!-- .card -->
+            </div><!-- .nk-block -->
         </div>
     </div>
-</x-app-layout>
+</div>
+@include('app.cards.create')
+@endsection

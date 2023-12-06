@@ -30,12 +30,16 @@ Route::middleware(['auth:sanctum', 'verified'])
     })
     ->name('dashboard');
 
+Route::get('scanners/new', [ScannerController::class, 'addRecord'])->name('scanners.addRecord');
+Route::post('scanners/storeCardScanner', [ScannerController::class, 'storeCardScanner'])->name('scanners.storeCardScanner');
+Route::get('pricing', [ScannerController::class, 'pricing'])->name('pricing.index');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
+
 Route::prefix('/')
     ->middleware(['auth:sanctum', 'verified'])
     ->group(function () {
         Route::resource('roles', RoleController::class);
         Route::resource('permissions', PermissionController::class);
-
         Route::resource('cards', CardController::class);
         Route::resource('scanners', ScannerController::class);
         Route::resource('students', StudentController::class);

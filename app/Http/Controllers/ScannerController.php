@@ -20,12 +20,15 @@ class ScannerController extends Controller
 
         $search = $request->get('search', '');
 
+        $users = User::whereHas('roles', function ($query) {
+            $query->where('name', 'vendor');
+        })->pluck('name', 'id');
+
         $scanners = Scanner::search($search)
             ->latest()
-            ->paginate(5)
-            ->withQueryString();
+            ->get();
 
-        return view('app.scanners.index', compact('scanners', 'search'));
+        return view('app.scanners.index', compact('scanners', 'search', 'users'));
     }
 
     /**

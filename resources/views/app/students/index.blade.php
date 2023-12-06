@@ -1,173 +1,139 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            @lang('crud.students.index_title')
-        </h2>
-    </x-slot>
+@extends('layouts.app')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <x-partials.card>
-                <div class="mb-5 mt-4">
-                    <div class="flex flex-wrap justify-between">
-                        <div class="md:w-1/2">
-                            <form>
-                                <div class="flex items-center w-full">
-                                    <x-inputs.text
-                                        name="search"
-                                        value="{{ $search ?? '' }}"
-                                        placeholder="{{ __('crud.common.search') }}"
-                                        autocomplete="off"
-                                    ></x-inputs.text>
-
-                                    <div class="ml-1">
-                                        <button
-                                            type="submit"
-                                            class="button button-primary"
-                                        >
-                                            <i class="icon ion-md-search"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="md:w-1/2 text-right">
-                            @can('create', App\Models\Student::class)
-                            <a
-                                href="{{ route('students.create') }}"
-                                class="button button-primary"
-                            >
-                                <i class="mr-1 icon ion-md-add"></i>
-                                @lang('crud.common.create')
-                            </a>
-                            @endcan
-                        </div>
+@section('content')
+<div class="container">
+    <div class="nk-content-inner">
+        <div class="nk-content-body">
+            <div class="nk-block-head">
+                <div class="nk-block-head-between flex-wrap gap g-2">
+                    <div class="nk-block-head-content">
+                        <h2 class="nk-block-title">Student List</h1>
+                            <nav>
+                                <ol class="breadcrumb breadcrumb-arrow mb-0">
+                                    <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">Students
+                                    </li>
+                                </ol>
+                            </nav>
                     </div>
-                </div>
-
-                <div class="block w-full overflow-auto scrolling-touch">
-                    <table class="w-full max-w-full mb-4 bg-transparent">
-                        <thead class="text-gray-700">
+                    <div class="nk-block-head-content">
+                        <ul class="d-flex">
+                            @can('create', App\Models\User::class)
+                            <li>
+                                <a href="{{ route('students.create') }}" class="btn btn-md d-md-none btn-primary"
+                                    data-bs-toggle="modal" data-bs-target="#addStudentModal">
+                                    <em class="icon ni ni-plus"></em>
+                                    <span>Add</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('students.create') }}" class="btn btn-primary d-none d-md-inline-flex"
+                                    data-bs-toggle="modal" data-bs-target="#addStudentModal">
+                                    <em class="icon ni ni-plus"></em>
+                                    <span>Add Student</span>
+                                </a>
+                            </li>
+                            @endcan
+                        </ul>
+                    </div>
+                </div><!-- .nk-block-head-between -->
+            </div><!-- .nk-block-head -->
+            <div class="nk-block">
+                <div class="card">
+                    <table class="datatable-init table" data-nk-container="table-responsive">
+                        <thead class="table-light">
                             <tr>
-                                <th class="px-4 py-3 text-left">
-                                    @lang('crud.students.inputs.name')
+                                <th class="tb-col">
+                                    <span class="overline-title">Students</span>
                                 </th>
-                                <th class="px-4 py-3 text-left">
-                                    @lang('crud.students.inputs.date_of_birth')
+                                <th class="tb-col">
+                                    <span class="overline-title">Parents</span>
                                 </th>
-                                <th class="px-4 py-3 text-left">
-                                    @lang('crud.students.inputs.gender')
+                                <th class="tb-col">
+                                    <span class="overline-title">Date Of Birth</span>
                                 </th>
-                                <th class="px-4 py-3 text-left">
-                                    @lang('crud.students.inputs.address')
+                                <th class="tb-col tb-col-xl">
+                                    <span class="overline-title">Gender</span>
                                 </th>
-                                <th class="px-4 py-3 text-left">
-                                    @lang('crud.students.inputs.user_id')
+                                <th class="tb-col tb-col-xxl">
+                                    <span class="overline-title">Address</span>
                                 </th>
-                                <th></th>
+                                <th class="tb-col tb-col-end" data-sortable="false">
+                                    <span class="overline-title">Action</span>
+                                </th>
                             </tr>
                         </thead>
-                        <tbody class="text-gray-600">
+                        <tbody>
                             @forelse($students as $student)
-                            <tr class="hover:bg-gray-50">
-                                <td class="px-4 py-3 text-left">
-                                    {{ $student->name ?? '-' }}
-                                </td>
-                                <td class="px-4 py-3 text-left">
-                                    {{ $student->date_of_birth ?? '-' }}
-                                </td>
-                                <td class="px-4 py-3 text-left">
-                                    {{ $student->gender ?? '-' }}
-                                </td>
-                                <td class="px-4 py-3 text-left">
-                                    {{ $student->address ?? '-' }}
-                                </td>
-                                <td class="px-4 py-3 text-left">
-                                    {{ optional($student->user)->name ?? '-' }}
-                                </td>
-                                <td
-                                    class="px-4 py-3 text-center"
-                                    style="width: 134px;"
-                                >
-                                    <div
-                                        role="group"
-                                        aria-label="Row Actions"
-                                        class="
-                                            relative
-                                            inline-flex
-                                            align-middle
-                                        "
-                                    >
-                                        @can('update', $student)
-                                        <a
-                                            href="{{ route('students.edit', $student) }}"
-                                            class="mr-1"
-                                        >
-                                            <button
-                                                type="button"
-                                                class="button"
-                                            >
-                                                <i
-                                                    class="icon ion-md-create"
-                                                ></i>
-                                            </button>
-                                        </a>
-                                        @endcan @can('view', $student)
-                                        <a
-                                            href="{{ route('students.show', $student) }}"
-                                            class="mr-1"
-                                        >
-                                            <button
-                                                type="button"
-                                                class="button"
-                                            >
-                                                <i class="icon ion-md-eye"></i>
-                                            </button>
-                                        </a>
-                                        @endcan @can('delete', $student)
-                                        <form
-                                            action="{{ route('students.destroy', $student) }}"
-                                            method="POST"
-                                            onsubmit="return confirm('{{ __('crud.common.are_you_sure') }}')"
-                                        >
-                                            @csrf @method('DELETE')
-                                            <button
-                                                type="submit"
-                                                class="button"
-                                            >
-                                                <i
-                                                    class="
-                                                        icon
-                                                        ion-md-trash
-                                                        text-red-600
-                                                    "
-                                                ></i>
-                                            </button>
-                                        </form>
-                                        @endcan
+                            <tr>
+                                <td class="tb-col">
+                                    <div class="media-group">
+                                        <div class="media media-md media-middle media-circle">
+                                            <img src="./images/avatar/a.jpg" alt="user">
+                                        </div>
+                                        <div class="media-text">
+                                            <a class="title">{{ $student->name ?? '-' }}</a>
+                                        </div>
                                     </div>
+                                </td>
+                                <td class="tb-col">{{ optional($student->user)->name ?? '-' }}</td>
+                                <td class="tb-col">{{ optional($student->date_of_birth)->format('Y-m-d') ?? '-' }}
+                                </td>
+                                <td class="tb-col">{{ $student->gender ?? '-' }}</td>
+                                <td class="tb-col">{{ $student->address ?? '-' }}</td>
+
+                                <td class="tb-col tb-col-end">
+                                    <div class="dropdown">
+                                        <a href="#" class="btn btn-sm btn-icon btn-zoom me-n1"
+                                            data-bs-toggle="dropdown">
+                                            <em class="icon ni ni-more-v"></em>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
+                                            <div class="dropdown-content py-1">
+                                                <ul class="link-list link-list-hover-bg-primary link-list-md">
+                                                    <li>
+                                                        @can('update', $student)
+                                                        <a href="{{ route('students.edit', $student) }}"><em
+                                                                class="icon ni ni-edit"></em><span>Edit</span></a>
+                                                        @endcan
+                                                    </li>
+                                                    <li>
+                                                        @can('delete', $student)
+                                                        <form id="deleteForm{{ $student->id }}"
+                                                            action="{{ route('students.destroy', $student) }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <a onclick="confirmDelete({{ $student->id }})">
+                                                                <em class="icon ni ni-trash"></em><span>Delete</span>
+                                                            </a>
+                                                        </form>
+                                                        @endcan
+                                                    </li>
+                                                    <li>
+                                                        @can('view', $student)
+                                                        <a href="{{ route('students.show', $student) }}"><em
+                                                                class="icon ni ni-eye"></em><span>View
+                                                                Details</span></a>
+                                                        @endcan
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div><!-- dropdown -->
                                 </td>
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="6">
-                                    @lang('crud.common.no_items_found')
-                                </td>
+                                <td colspan="8" class="text-center py-4">No students found.</td>
                             </tr>
                             @endforelse
                         </tbody>
-                        <tfoot>
-                            <tr>
-                                <td colspan="6">
-                                    <div class="mt-10 px-4">
-                                        {!! $students->render() !!}
-                                    </div>
-                                </td>
-                            </tr>
-                        </tfoot>
                     </table>
-                </div>
-            </x-partials.card>
+                </div><!-- .card -->
+            </div><!-- .nk-block -->
         </div>
     </div>
-</x-app-layout>
+</div>
+@include('app.students.create')
+@endsection

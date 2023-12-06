@@ -20,12 +20,14 @@ class CardController extends Controller
 
         $search = $request->get('search', '');
 
+        $students = Student::pluck('name', 'id');
+
         $cards = Card::search($search)
             ->latest()
-            ->paginate(5)
-            ->withQueryString();
+            ->paginate();
+        ;
 
-        return view('app.cards.index', compact('cards', 'search'));
+        return view('app.cards.index', compact('cards', 'students'));
     }
 
     /**
@@ -116,5 +118,23 @@ class CardController extends Controller
         return redirect()
             ->route('cards.index')
             ->withSuccess(__('crud.common.removed'));
+    }
+
+    /**
+     * @param \App\Http\Requests\CardUpdateRequest $request
+     * @param \App\Models\Card $card
+     * @return \Illuminate\Http\Response
+     */
+    public function toggleStatus(Card $card)
+    {
+        $this->authorize('update', $card);
+
+        $newStatus = $card->status === 'active' ? 'inactive' : 'active';
+        $card->status = $newStatus;
+        $card->save();
+
+        return redirect()
+            ->route('cards.index', $card)
+            ->withSuccess(__('crud.common.saved'));
     }
 }

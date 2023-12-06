@@ -8,6 +8,7 @@ use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -21,12 +22,13 @@ class UserController extends Controller
 
         $search = $request->get('search', '');
 
+        $roles = Role::get();
+
         $users = User::search($search)
             ->latest()
-            ->paginate(5)
-            ->withQueryString();
+            ->get();
 
-        return view('app.users.index', compact('users', 'search'));
+        return view('app.users.index', compact('users', 'roles'));
     }
 
     /**
@@ -85,10 +87,14 @@ class UserController extends Controller
         $this->authorize('update', $user);
 
         $roles = Role::get();
+        $user->load('roles');
 
-        return view('app.users.edit', compact('user', 'roles'));
+        // Hash the password for display in the edit form
+        $hashedPassword = $user->password;
+
+        return view('app.users.edit', compact('user', 'roles', 'hashedPassword'));
     }
-
+    
     /**
      * @param \App\Http\Requests\UserUpdateRequest $request
      * @param \App\Models\User $user
@@ -108,7 +114,10 @@ class UserController extends Controller
 
         $user->update($validated);
 
-        $user->syncRoles($request->roles);
+        // Sync roles only if roles are provided in the request
+        if ($request->has('roles')) {
+            $user->syncRoles([$request->input('roles')]);
+        }
 
         return redirect()
             ->route('users.edit', $user)

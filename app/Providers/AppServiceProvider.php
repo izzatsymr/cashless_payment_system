@@ -22,6 +22,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        view()->composer('layouts.nav', function ($view) {
+            // Get the authenticated user
+            $user = auth()->user();
+
+            // Get the user role (adjust the field name based on your database schema)
+            $roles = $user ? $user->roles()->get() : null;
+
+            // Pass the user and role data to the view
+            $view->with(compact('user', 'roles'));
+        });
     }
 }
