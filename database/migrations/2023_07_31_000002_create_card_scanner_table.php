@@ -13,9 +13,12 @@ return new class extends Migration {
     public function up()
     {
         Schema::create('card_scanner', function (Blueprint $table) {
-            $table->unsignedBigInteger('card_id');
             $table->unsignedBigInteger('scanner_id');
-            $table->enum('is_success', ['yes', 'no']);
+            $table->unsignedBigInteger('card_id');
+            $table->decimal('transaction_amount');
+            $table->enum('is_success', ['yes','no']);
+
+            $table->timestamps();
         });
     }
 

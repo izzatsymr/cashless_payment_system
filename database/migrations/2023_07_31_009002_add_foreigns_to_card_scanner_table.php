@@ -14,16 +14,16 @@ return new class extends Migration {
     {
         Schema::table('card_scanner', function (Blueprint $table) {
             $table
-                ->foreign('card_id')
+                ->foreign('scanner_id')
                 ->references('id')
-                ->on('cards')
+                ->on('scanners')
                 ->onUpdate('CASCADE')
                 ->onDelete('CASCADE');
 
             $table
-                ->foreign('scanner_id')
+                ->foreign('card_id')
                 ->references('id')
-                ->on('scanners')
+                ->on('cards')
                 ->onUpdate('CASCADE')
                 ->onDelete('CASCADE');
         });
@@ -37,8 +37,8 @@ return new class extends Migration {
     public function down()
     {
         Schema::table('card_scanner', function (Blueprint $table) {
-            $table->dropForeign(['card_id']);
             $table->dropForeign(['scanner_id']);
+            $table->dropForeign(['card_id']);
         });
     }
 };

@@ -10,7 +10,7 @@
                                 <label for="current_password" class="form-label">Current
                                     Password</label>
                                 <div class="form-control-wrap">
-                                    <a class="form-control-icon end password-toggle" title="Toggle show/hide password">
+                                    <a href="current_password" class="form-control-icon end password-toggle" title="Toggle show/hide password">
                                         <em class="on icon ni ni-eye-off"></em>
                                         <em class="off icon ni ni-eye"></em>
                                     </a>
@@ -23,7 +23,7 @@
                             <div class="form-group">
                                 <label for="password" class="form-label">New Password</label>
                                 <div class="form-control-wrap">
-                                    <a class="form-control-icon end password-toggle" title="Toggle show/hide password">
+                                    <a href="password" class="form-control-icon end password-toggle" title="Toggle show/hide password">
                                         <em class="on icon ni ni-eye-off"></em>
                                         <em class="off icon ni ni-eye"></em>
                                     </a>
@@ -38,7 +38,7 @@
                                     New
                                     Password</label>
                                 <div class="form-control-wrap">
-                                    <a class="form-control-icon end password-toggle" title="Toggle show/hide password">
+                                    <a href="password_confirmation" class="form-control-icon end password-toggle" title="Toggle show/hide password">
                                         <em class="on icon ni ni-eye-off"></em>
                                         <em class="off icon ni ni-eye"></em>
                                     </a>

@@ -25,7 +25,7 @@ class StudentFactory extends Factory
         return [
             'name' => $this->faker->name(),
             'date_of_birth' => $this->faker->date,
-            'gender' => \Arr::random(['male', 'female']),
+            'gender' => \Arr::random(['male', 'female', 'other']),
             'address' => $this->faker->address,
             'user_id' => \App\Models\User::factory(),
         ];

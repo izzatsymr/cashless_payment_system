@@ -24,7 +24,7 @@ class CardController extends Controller
 
         $cards = Card::search($search)
             ->latest()
-            ->paginate();
+            ->get();
         ;
 
         return view('app.cards.index', compact('cards', 'students'));

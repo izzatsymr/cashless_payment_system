@@ -12,13 +12,13 @@ return new class extends Migration {
      */
     public function up()
     {
-        Schema::create('students', function (Blueprint $table) {
+        Schema::create('cards', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
-            $table->date('date_of_birth');
-            $table->enum('gender', ['male', 'female']);
-            $table->string('address');
-            $table->unsignedBigInteger('user_id');
+            $table->string('rfid');
+            $table->string('security_key')->nullable();
+            $table->decimal('balance')->nullable();
+            $table->enum('status', ['active', 'inactive'])->nullable();
+            $table->unsignedBigInteger('student_id')->nullable();
 
             $table->timestamps();
         });
@@ -31,6 +31,6 @@ return new class extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('students');
+        Schema::dropIfExists('cards');
     }
 };

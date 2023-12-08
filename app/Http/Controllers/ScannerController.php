@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Card;
 use App\Models\User;
 use App\Models\Scanner;
 use Illuminate\Http\Request;
 use App\Http\Requests\ScannerStoreRequest;
 use App\Http\Requests\ScannerUpdateRequest;
+use Illuminate\Support\Facades\Route;
 
 class ScannerController extends Controller
 {
@@ -119,5 +121,73 @@ class ScannerController extends Controller
         return redirect()
             ->route('scanners.index')
             ->withSuccess(__('crud.common.removed'));
+    }
+
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Scanner $scanner
+     * @return \Illuminate\Http\Response
+     */
+    public function addRecord(Request $request)
+    {
+        $scanners = Scanner::pluck('name', 'id');
+        $cards = Card::pluck('rfid', 'id');
+
+        return view('app.scanners.addRecord', compact('scanners', 'cards'));
+    }
+
+    /**
+     * Store a new card scanner record and update the card balance.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    // public function storeCardScanner(Request $request)
+    // {
+    //     $validated = $request->validate([
+    //         'scanner_id' => 'required|exists:scanners,id',
+    //         'card_id' => 'required|exists:cards,id',
+    //     ]);
+
+    //     $scanner = Scanner::find($validated['scanner_id']);
+    //     $card = Card::find($validated['card_id']);
+
+    //     // Check if the card and scanner exist
+    //     if (!$scanner || !$card) {
+    //         return redirect()->route('scanners.index')->withError('Card or scanner not found.');
+    //     }
+
+    //     // Calculate the new balance
+    //     $newBalance = $card->balance - $scanner->amount;
+
+    //     // Determine if the transaction was successful
+    //     $isSuccess = $newBalance >= 0 ? 'yes' : 'no';
+
+    //     // If the transaction was successful, update the card's balance
+    //     if ($isSuccess === 'yes') {
+    //         $card->update(['balance' => $newBalance]);
+    //     }
+
+    //     // Attach the card to the scanner with the result of the transaction
+    //     $scanner->cards()->attach($validated['card_id'], [
+    //         'is_success' => $isSuccess
+    //     ]);
+
+    //     return redirect()->route('scanners.index')->withSuccess(__('crud.common.created'));
+    // }
+
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function pricing(Request $request)
+    {
+        $search = $request->get('search', '');
+
+        $scanners = Scanner::search($search)
+            ->latest()
+            ->get();
+
+        return view('app.pricing.index', compact('scanners', 'search'));
     }
 }
