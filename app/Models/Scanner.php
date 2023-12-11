@@ -22,6 +22,10 @@ class Scanner extends Model
 
     public function cards()
     {
-        return $this->belongsToMany(Card::class);
+        return $this->belongsToMany(Card::class)
+            ->using(CardScanner::class)
+            ->withPivot(['is_success','transaction_amount','created_at']) 
+            ->withTimestamps(); 
     }
+
 }

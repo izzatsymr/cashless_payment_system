@@ -38,7 +38,7 @@
                 <div class="card card-gutter-md">
                     <div class="card-body">
                         <div class="bio-block">
-                            <h4 class="bio-block-title mb-4">Edit Profile</h4>
+                            <h4 class="bio-block-title mb-4">Edit Users</h4>
                             <form method="POST" action="{{ route('users.update', $user) }}">
                                 @csrf
                                 @method('PUT')
@@ -76,7 +76,7 @@
                                         <div class="form-group">
                                             <label for="gender" class="form-label">Gender</label>
                                             <div class="form-control-wrap">
-                                                <select name="gender" class="js-select" data-search="true"
+                                                <select name="gender" class="form-select" data-search="true"
                                                     data-sort="false" required>
                                                     @php $selected = old('gender') @endphp
                                                     <option value="male">Male</option>
@@ -112,7 +112,7 @@
                                         <div class="form-group">
                                             <label for="role" class="form-label">Role</label>
                                             <div class="form-control-wrap">
-                                                <select name="roles[]" class="js-select" data-search="true"
+                                                <select name="roles[]" class="form-select" data-search="true"
                                                     data-sort="false" required>
                                                     @foreach ($roles as $role)
                                                     @php
@@ -129,6 +129,10 @@
                                     @endif
                                 </div>
                                 <div class="form-group mt-4">
+                                    <a href="{{ route('users.index') }}" class="btn btn-light">
+                                        <i class="icon ion-md-return-left text-primary"></i>
+                                        @lang('crud.common.back')
+                                    </a>
                                     <button type="submit" class="btn btn-primary">Save Changes</button>
                                 </div>
                             </form>
