@@ -108,7 +108,7 @@ return [
     |
     */
 
-    'faker_locale' => 'en_US',
+    'faker_locale' => 'ms_MY',
 
     /*
     |--------------------------------------------------------------------------
@@ -212,6 +212,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
+        'Toyyibpay' => Tarsoft\Toyyibpay\ToyyibpayFacade::class,
     ])->toArray(),
 
 ];

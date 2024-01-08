@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CardController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ScannerController;
@@ -34,6 +35,8 @@ Route::get('scanners/new', [ScannerController::class, 'addRecord'])->name('scann
 Route::post('scanners/storeCardScanner', [ScannerController::class, 'storeCardScanner'])->name('scanners.storeCardScanner');
 Route::get('pricing', [ScannerController::class, 'pricing'])->name('pricing.index');
 Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::post('cards/{card}/reload', [PaymentController::class, 'createBill'])
+    ->name('payments.createBill');
 
 Route::prefix('/')
     ->middleware(['auth:sanctum', 'verified'])

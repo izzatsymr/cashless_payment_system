@@ -8,7 +8,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CardController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\ScannerController;
- 
+use App\Http\Controllers\PaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,13 +21,15 @@ use App\Http\Controllers\Api\ScannerController;
 |
 */
 
-Route::post('/store-card-scanner', [ScannerController::class, 'storeCardScannerAPI']);
 Route::get('/scanners/{scanner}/mode', [ScannerController::class, 'getScannerMode'])->name('scanners.mode');
 Route::post('/addcard', [CardController::class, 'addCard']);
 Route::post('/scancard', [CardController::class, 'updateCardBalance']);
 
 
 Route::post('/login', [AuthController::class, 'login'])->name('api.login');
+
+Route::get('payment/{billId}', [PaymentController::class, 'index']);
+Route::get('payment-confirmation', [PaymentController::class, 'paymentConfirmation'])->name('paymentConfirmation');
 
 Route::middleware('auth:sanctum')
     ->get('/user', function (Request $request) {

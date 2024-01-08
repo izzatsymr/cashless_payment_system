@@ -7,6 +7,8 @@ use App\Models\Student;
 use Illuminate\Http\Request;
 use App\Http\Requests\CardStoreRequest;
 use App\Http\Requests\CardUpdateRequest;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class CardController extends Controller
 {
@@ -65,12 +67,34 @@ class CardController extends Controller
      * @param \App\Models\Card $card
      * @return \Illuminate\Http\Response
      */
+    
+
     public function show(Request $request, Card $card)
     {
         $this->authorize('view', $card);
 
-        return view('app.cards.show', compact('card'));
+        // Get the currently logged-in user
+        $loggedInUser = Auth::user();
+
+        // Retrieve the student associated with the card
+        $student = $card->student;
+
+        if ($student) {
+            // Use the student details as needed
+            $studentName = $student->name;
+            $studentId = $student->id;
+
+            // Get details of the currently logged-in user
+            $loggedInUserName = $loggedInUser->name;
+            $loggedInUserEmail = $loggedInUser->email;
+  
+        }
+
+        // Handle the case where no student is associated with the card
+        return view('app.cards.show', compact('card', 'student'));
     }
+
+
 
     /**
      * @param \Illuminate\Http\Request $request

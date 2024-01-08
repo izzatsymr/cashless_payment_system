@@ -76,7 +76,12 @@ class CardController extends Controller
                 'transaction_amount' => $transaction
             ]);
 
-            return response()->json(['message' => 'Card balance updated successfully', 'is_success' => $isSuccess]);
+            // Return JSON response with the new balance
+            return response()->json([
+                'message' => 'Card balance updated successfully',
+                'is_success' => $isSuccess,
+                'new_balance' => $isSuccess === 'yes' ? $newBalance : $card->balance
+            ]);
         } else {
             // If the card status is 'inactive', set is_success to 'no'
             $isSuccess = 'no';
@@ -88,8 +93,12 @@ class CardController extends Controller
                 'transaction_amount' => $transaction
             ]);
 
-            return response()->json(['message' => 'Card status is inactive', 'is_success' => $isSuccess]);
+            // Return JSON response with the new balance
+            return response()->json([
+                'message' => 'Card status is inactive',
+                'is_success' => $isSuccess,
+                'new_balance' => $card->balance
+            ]);
         }
     }
-
 }
